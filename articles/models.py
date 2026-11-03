@@ -7,6 +7,11 @@ class Article(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     rate = models.IntegerField()
+    category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True)
 
     def __str__(self) -> str:
         return self.title
+
+
+class Category(models.Model):
+    name = models.CharField()
