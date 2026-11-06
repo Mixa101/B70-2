@@ -3,7 +3,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 
 from articles.forms import ArticleForm
-from articles.models import Article, Category
+from articles.models import Article
 
 
 def articles_list(request: HttpRequest) -> HttpResponse:
@@ -18,13 +18,28 @@ def article_detail(request: HttpRequest, id: int) -> HttpResponse:
 
 
 def article_create(request: HttpRequest) -> HttpResponse:
-
-    if request.method == "POST":
-        form = ArticleForm(request.POST, request.FILES)
-
-        if not form.is_valid():
-            raise ValueError()
+    form = ArticleForm(request.POST or None, request.FILES or None)
+    if request.method == "POST" and form.is_valid():
         form.save()
         return redirect("article_list")
-    categories = Category.objects.all()
-    return render(request, "articles/create.html", {"categories": categories})
+    return render(request, "articles/create.html", {"form": form})
+
+
+def article_edit(request: HttpRequest, id: int) -> HttpResponse:
+    article = Article.objects.get(id=id)
+    form = ArticleForm(request.POST or None, request.FILES or None, instance=article)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        return redirect("article_detail", id=form.instance.id)
+
+    return render(request, "articles/edit.html", {"form": form})
+
+
+def article_delete(request: HttpRequest, id: int) -> HttpResponse:
+    article = Article.objects.get(id=id)
+
+    if request.method == "POST":
+        article.delete()
+        return redirect("article_list")
+
+    return render(request, "articles/delete.html", context={"article": article})

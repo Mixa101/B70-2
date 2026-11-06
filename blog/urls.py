@@ -20,12 +20,20 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from articles.views import article_create, article_detail, articles_list
+from articles.views import (
+    article_create,
+    article_delete,
+    article_detail,
+    article_edit,
+    articles_list,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", articles_list, name="article_list"),
     path("<int:id>/detail", article_detail, name="article_detail"),
+    path("<int:id>/edit", article_edit, name="article_edit"),
+    path("<int:id>/delete", article_delete, name="article_delete"),
     path("create", article_create, name="article_create"),
 ]
 

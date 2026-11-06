@@ -75,11 +75,8 @@
 
         {% if user.is_authenticated %}
         <div class="d-flex gap-2">
-            <a href="#" class="btn btn-outline-primary">Редактировать</a>
-            <button type="button" class="btn btn-outline-danger"
-                    data-bs-toggle="modal" data-bs-target="#deleteModal">
-                Удалить
-            </button>
+            <a href="{% url 'article_edit' article.pk %}" class="btn btn-outline-primary">Редактировать</a>
+<a href="{% url 'article_delete' article.pk %}" class="btn btn-outline-primary">Удалить</a>
         </div>
         {% endif %}
     </div>
