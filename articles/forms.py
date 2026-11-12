@@ -13,16 +13,10 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = ("title", "text", "rate", "image", "category")
 
-    def validation_title(self, title):
-        if len(title) > 10:
-            raise forms.ValidationError("validation error from func")
-
     def clean_title(self):
         title = self.cleaned_data["title"]
 
         if title == "NOT VALID":
             raise forms.ValidationError("TUT")
-
-        self.validation_title(title)
 
         return title

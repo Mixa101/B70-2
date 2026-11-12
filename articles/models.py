@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -9,6 +10,7 @@ class Article(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     rate = models.IntegerField()
     category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.title
